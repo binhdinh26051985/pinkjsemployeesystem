@@ -1,0 +1,3300 @@
+Video link: https://www.youtube.com/watch?v=IKQQIYDfyPc&t=893s
+github link: https://github.com/YousafKhan1/Employee-Management-System-in-React-Node-MySQL/blob/main/ReactFrontEnd/Login.jsx
+https://github.com/YousafKhan1/Employee-Management-System-in-React-Node-MySQL/tree/main/Updated%20Employee%20MS%20with%20React%20%2B%20Node%20%2B%20MySQL/Front-End%20Folder/src/Components
+
+
+==================setup==================
+create folder employee
+install react
+C:\Users\volem\Desktop\Employee>npm create vite
+? Project name: » employeems
+select react
+select javascript
+=================C:\Users\volem\Desktop\Employee>cd employeems=============
+npm install
+=============C:\Users\volem\Desktop\Employee\employeems>npm run dev============
+create folder server || employeems
+
+C:\Users\volem\Desktop\Employee\server>npm init -y
+C:\Users\volem\Desktop\Employee\server>npm install express mysql cors cookie-parser bcrypt jsonwebtoken multer path
+C:\Users\volem\Desktop\Employee\server>npm install nodemon
+==============inside folder server, create index.js
+=============package.json==========
+ "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type":"module", >>>>>add this line
+
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon index.js" >>>>add this line
+  },
+
+==================index.js===========
+import express from "express";
+const app = express()
+
+app.listen(3000,() =>{
+    console.log('server is running')
+})
+================C:\Users\volem\Desktop\Employee\server>npm start========
+=======================back to frontend: employeems folder====
+C:\Users\volem\Desktop\Employee\employeems>npm install axios bootstrap react-router-dom bootstrap-icons
+>>> npm run dev
+================================employeems/src/app.jsx
+import './App.css'
+
+function App() {
+ 
+
+  return (
+    <></>
+  )
+}
+
+export default App
+
+
+=================delete all content in file App.css; index.css======
+==================app.jsx============
+import './App.css'
+
+function App() {
+ 
+
+  return (
+    <>My app</>
+  )
+}
+
+export default App
+=======================src/create folder components/login.jsx==========
+import React from "react"
+import './style.css'
+//import axios from 'axios'
+//import { useNavigate } from 'react-router-dom'
+
+
+const Login=()=>{
+    return (
+        <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <h2>Login Page</h2>
+            <form>
+                <div className='mb-3'>
+                    <label htmlFor="email"><strong>Email</strong></label>
+                    <input type="email" name='email'   
+                    className='form-control rounded-0' autoComplete='off' placeholder='Enter Email'/>
+                </div>
+                <div className='mb-3'>
+                    <label htmlFor="password"><strong>Password</strong></label>
+                    <input type="password" placeholder='Enter Password' name='password'
+                    className='form-control rounded-0' />
+                </div>
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
+                <div className='mb-1'>
+                    <input type="checkbox" name="tick" id="tick" className="me-2"/>
+                    <label htmlFor="password">You are Agree with terms & conditions</label>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    )
+}
+
+
+export default Login
+================================create folder public/images then copy 1 image to this folder.
+========create file: Components/style.css=========
+.loginPage {
+    background: url('Images/1st floor.jpg');
+    background: linear-gradient(rgba(11, 11, 11, 0.5), rgba(10, 10, 10, 0.5)), url("Images/1st floor.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 120%;
+}
+
+.loginForm {
+    background-color: rgba(1, 32, 93, 0.6);
+    color: white;
+}
+
+=========================back to App.jsx============
+import './App.css'
+import Login from './components/login'
+
+function App() {
+ 
+
+  return (
+    <> <Login/> </>
+  )
+}
+
+export default App
+
+===============now we could see login page in html page==============
+
+========back to login.js to add function and get value from page============
+
+import React, { useState} from "react"  >>>>>>>>> [1]get value set react package
+import './style.css'
+import axios from 'axios' 
+//import { useNavigate } from 'react-router-dom'
+
+
+const Login=()=>{                                        >>>>>>>>>>>>[2]get value input from user from below html page : email value, password value.
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
+    })
+
+    const handleSubmit = (event) =>{    >>>>>>>>>>>>>>>[5] when user press Login button, this function will get value from input form to post data to msql via API
+        event.preventDefault()
+        axios.post('http://localhost:3000/auth/adminlogin')
+        .then(result=>console.log(result))
+        .catch(err=> console.log(err))
+    }
+
+    return (
+        <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <h2>Login Page</h2>
+            <form onSubmit={handleSubmit}>  >>>>>>>>>>>>>>>>>>>[4] get all value [email, password] when user press Login button
+                <div className='mb-3'>
+                    <label htmlFor="email"><strong>Email</strong></label>
+                    <input type="email" name='email'   
+                    autoComplete='off' placeholder='Enter Email' 
+                    onChange={(e)=> setValues({ ...values, email: e.target.value})}    >>>>>> [3]get email value from user input
+                    className='form-control rounded-0' />
+                </div>
+                <div className='mb-3'>
+                    <label htmlFor="password"><strong>Password</strong></label>
+                    <input type="password" placeholder='Enter Password' name='password'
+                    onChange={(e)=> setValues({ ...values, password: e.target.value})}    >>>>>> [3]get password value from user input
+                    className='form-control rounded-0' />
+                </div>
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
+                <div className='mb-1'>
+                    <input type="checkbox" name="tick" id="tick" className="me-2"/>
+                    <label htmlFor="password">You are Agree with terms & conditions</label>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    )
+}
+
+
+export default Login
+
+==============================BACKEND: SERVER=======================
+===================MSQL database===============
+
+1. open XAMPP
+2. php amdin, create database name "employeems"
+3. create table name "admin" 3 fields : id, email, password
+4. id,type: INT, tick A_I ; email ,type: VARCHAR, lenght: 255 ; password, type: VARCHAR, lenght: 255
+5. Save table.
+6 insert 1 record to the amdin table: id: 1, email: pinkpink@gmail.com, password: 12345
+
+================server side=============
+create folder: server/utils
+create file: server/utils/db.js=============
+import mysql from 'mysql'
+
+const con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: 'employeems'
+})
+
+con.connect(function(err){
+    if(err) {
+        console.log("connection error")
+    }
+    else {
+        console.log('Connected')
+    }
+})
+=====================create folder: server/Routes/
+create file server/Routes/AdminRoute.js=============
+
+import express from 'express'
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) =>{
+    console.log(req.body)
+})
+
+
+export{ router as adminRouter}
+
+======================server/index.js==========
+import express from "express";
+import cors from 'cors'
+
+import { adminRouter } from "./Routes/AdminRoute.js";
+
+const app = express()
+app.use(cors())
+app.use(express.json())
+app.use('/auth', adminRouter)
+
+
+app.listen(3000,() =>{
+    console.log('server is running')
+})
+
+===========================frontend: src/components/login.jsx====
+import React, { useState} from "react"
+import './style.css'
+import axios from 'axios'
+//import { useNavigate } from 'react-router-dom'
+
+
+const Login=()=>{
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
+    })
+
+    const handleSubmit = (event) =>{
+        event.preventDefault()
+        axios.post('http://localhost:3000/auth/adminlogin', values) >>>>>"values" =>add value from login page here
+        .then(result=>console.log(result))
+        .catch(err=> console.log(err))
+    }
+
+    return (
+        <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <h2>Login Page</h2>
+            <form onSubmit={handleSubmit}>
+                <div className='mb-3'>
+                    <label htmlFor="email"><strong>Email</strong></label>
+                    <input type="email" name='email'   
+                    autoComplete='off' placeholder='Enter Email' 
+                    onChange={(e)=> setValues({ ...values, email: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <div className='mb-3'>
+                    <label htmlFor="password"><strong>Password</strong></label>
+                    <input type="password" placeholder='Enter Password' name='password'
+                    onChange={(e)=> setValues({ ...values, password: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
+                <div className='mb-1'>
+                    <input type="checkbox" name="tick" id="tick" className="me-2"/>
+                    <label htmlFor="password">You are Agree with terms & conditions</label>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    )
+}
+
+
+export default Login
+============================check the login page to see the value transfer to Server===============
+{ email: 'pinky@gmail.com', password: 'cmn12345' }
+
+=====workin SQL database to check if email, pass = sql records...
+=======================server/Routes/AdminhRoutes.js=======
+
+=====================server/db.js====================
+
+import mysql from 'mysql'
+
+const con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: 'employeems'
+})
+
+con.connect(function(err){
+    if(err) {
+        console.log("connection error")
+    }
+    else {
+        console.log('Connected')
+    }
+})
+
+export default con; >>>>>>Add this line
+=============================server/Routes/Admin.Route.js============
+import express from 'express'
+import con from "../utils/db.js";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) =>{  >>>>>>>added below line code<<<<<<<<<<
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result)=>{
+            if(err) return res.json({loginStatus: false, Error: "Query error"})
+            if(result.length>0){
+                const email = result[0].email;
+            }
+        }
+    )
+
+
+})
+
+
+export{ router as adminRouter}
+==========token Jwt=============server/Routes/Admin.Route.js=============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken"; >>>>>>>>add this line
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email }, "jwt_secret_key", { expiresIn: "100d" })  >>>>>>>>add this line
+            }
+        }
+    )
+
+
+})
+
+
+export { router as adminRouter }
+
+==============================server/index.js============
+import express from "express";
+import cors from 'cors'
+
+import { adminRouter } from "./Routes/AdminRoute.js";
+
+const app = express()  >>>>>>>>>>add below lines:
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    methods: ['GET', 'POST', 'PUT'],
+    credentials: true
+}))                            <<<<<<<<<<<<<<<<<<<
+
+app.use(express.json())
+app.use('/auth', adminRouter)
+
+
+app.listen(3000,() =>{
+    console.log('server is running')
+})
+
+========================AdminRoutes.js=============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" }); >>>>>>>>>>add below line
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" }); <<<<<<<<<<<<<<<<<<<
+            }
+        }
+    )
+
+
+})
+
+
+export { router as adminRouter }
+
+========================frontend: employeems/scr/App.jsx=========
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import{BrowserRouter, Routes, Route} from 'react-router-dom' >>>>>this line<<<<
+
+function App() {
+ 
+
+  return (  >>>>>>>>>>>>>>>>>>>>>>>>> below lines
+    <BrowserRouter>
+    <Routes>
+      <Route path="/adminlogin" element={<Login/>}></Route>
+      <Route path="/dashboard" element={<Login/>}></Route>
+    </Routes>
+    </BrowserRouter> <<<<<<<<<<<<<<<<<<<<<<<<<<<
+  )
+}
+
+export default App
+
+=====================frontend: employeems/scr/coponents/create file dashboard.jsx========
+import React from 'react'
+
+export const Dashboard = () => {
+  return (
+    <div>Dashboard</div>
+  )
+}
+
+export default Dashboard
+=============================App.jsx=====
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import{BrowserRouter, Routes, Route} from 'react-router-dom'
+import Dashboard from './components/dashboard'
+
+function App() {
+ 
+
+  return (
+    <BrowserRouter>
+    <Routes>
+      <Route path="/adminlogin" element={<Login/>}></Route>
+      <Route path="/dashboard" element={<Dashboard/>}></Route> >>>>>>>add change element = {Dashboard} <<<<<<<
+    </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+=======================================login.jsx=================
+import React, { useState} from "react"
+import './style.css'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom' >>>>>add this line<<<<<<<<<<<<<<
+
+
+const Login=()=>{
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
+    })
+
+    const navigate = useNavigate() >>>>>>add this line<<<<<<<<<<<
+
+    const handleSubmit = (event) =>{
+        event.preventDefault()
+        axios.post('http://localhost:3000/auth/adminlogin', values)
+        .then(result=> navigate('/dashboard'))  >>>>>Edit this line<<<<<
+        .catch(err=> console.log(err))
+    }
+
+    
+
+    return (
+        <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <h2>Login Page</h2>
+            <form onSubmit={handleSubmit}>
+                <div className='mb-3'>
+                    <label htmlFor="email"><strong>Email</strong></label>
+                    <input type="email" name='email'   
+                    autoComplete='off' placeholder='Enter Email' 
+                    onChange={(e)=> setValues({ ...values, email: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <div className='mb-3'>
+                    <label htmlFor="password"><strong>Password</strong></label>
+                    <input type="password" placeholder='Enter Password' name='password'
+                    onChange={(e)=> setValues({ ...values, password: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
+                <div className='mb-1'>
+                    <input type="checkbox" name="tick" id="tick" className="me-2"/>
+                    <label htmlFor="password">You are Agree with terms & conditions</label>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    )
+}
+
+
+export default Login
+
+===========================check the page url: http://localhost:5173/adminLogin
+=> input email, pass page direct to dahsboard page: "http://localhost:5173/dashboard"
+
+==========================login.jsx===================
+import React, { useState} from "react"
+import './style.css'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+
+const Login=()=>{
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
+    })
+
+    const navigate = useNavigate()
+    axios.defaults.withCredentials = true; >>>>>>>>>>>>>>>>>>add this line to show the value in cookie page
+
+    const handleSubmit = (event) =>{
+        event.preventDefault()
+        axios.post('http://localhost:3000/auth/adminlogin', values)
+        .then(result=> navigate('/dashboard'))
+        .catch(err=> console.log(err))
+    }
+
+    
+
+    return (
+        <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <h2>Login Page</h2>
+            <form onSubmit={handleSubmit}>
+                <div className='mb-3'>
+                    <label htmlFor="email"><strong>Email</strong></label>
+                    <input type="email" name='email'   
+                    autoComplete='off' placeholder='Enter Email' 
+                    onChange={(e)=> setValues({ ...values, email: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <div className='mb-3'>
+                    <label htmlFor="password"><strong>Password</strong></label>
+                    <input type="password" placeholder='Enter Password' name='password'
+                    onChange={(e)=> setValues({ ...values, password: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
+                <div className='mb-1'>
+                    <input type="checkbox" name="tick" id="tick" className="me-2"/>
+                    <label htmlFor="password">You are Agree with terms & conditions</label>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    )
+}
+
+
+export default Login
+
+
+=======================input login page then direct to dashboard page ==> inspect pagge check cookie value like image check cookie.png
+=========================display error msg when user input wrong emal|pass:=======login.jsx============
+import React, { useState} from "react"
+import './style.css'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+
+const Login=()=>{
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
+    })
+    const[error, setError] = useState(null) >>>>>>>>>>>>>>add this line<<<<<<<<<<<<
+
+    const navigate = useNavigate()
+    axios.defaults.withCredentials = true;
+
+    const handleSubmit = (event) =>{
+        event.preventDefault()
+        axios.post('http://localhost:3000/auth/adminlogin', values)
+        .then(result=> { >>>>>>>>>>>>>>>>>>>>>>>>>>add below lines>>>>>>>>>>>
+            if(result.data.loginStatus){
+                navigate('/dashboard')
+            }
+            else{
+                setError(result.data.Error)
+            }
+        })   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            
+        .catch(err=> console.log(err))
+    }
+
+    
+
+    return (
+        <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>show the error msg here>>>>>>>>>>>
+            <div className='text-warning'> 
+                {error && error}
+            </div> <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            <h2>Login Page</h2>
+            <form onSubmit={handleSubmit}>
+                <div className='mb-3'>
+                    <label htmlFor="email"><strong>Email</strong></label>
+                    <input type="email" name='email'   
+                    autoComplete='off' placeholder='Enter Email' 
+                    onChange={(e)=> setValues({ ...values, email: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <div className='mb-3'>
+                    <label htmlFor="password"><strong>Password</strong></label>
+                    <input type="password" placeholder='Enter Password' name='password'
+                    onChange={(e)=> setValues({ ...values, password: e.target.value})}
+                    className='form-control rounded-0' />
+                </div>
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
+                <div className='mb-1'>
+                    <input type="checkbox" name="tick" id="tick" className="me-2"/>
+                    <label htmlFor="password">You are Agree with terms & conditions</label>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    )
+}
+
+
+export default Login
+
+========================check the login page url: http://localhost:5173/adminLogin ==> input wrong pass to see msg error alert!
+
+===============when login sucessfuly start to design the dashboard
+===========================dashboard.jsx==============
+import React from 'react'
+import { Link } from "react-router-dom"
+
+export const Dashboard = () => {
+  return (
+    <div>
+        <div>
+            <div>
+                <div>
+                    <Link to="/dashboard"> CWC </Link>
+                    <ul>
+                        <li>
+                            <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard">Manage Employees</Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard">Category</Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard">Profile</Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard">Logout</Link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default Dashboard
+==================================let check the design of dashboard url: "http://localhost:5173/dashboard"
+==================apply the bootstrap to layout the dashboard page ======dashboard.jsx===========
+import React from 'react'
+import { Link } from "react-router-dom"
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+export const Dashboard = () => {
+    return (  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>QUOTED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        <div className="container-fluid">
+            <div className="row flex-nowrap">
+                <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                    <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="/" className="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
+                            <span className="fs-5 fw-bolder d-none d-sm-inline">Admin Dashboard</span>
+                        </a>
+                        <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li>
+                                <Link to="/dashboard" data-bs-toggle="collapse" className="nav-link text-white px-0 align-middle">
+                                    <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Dashboard</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Employees</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard" className="nav-link px-0 align-middle text-white">
+                                    <i className="bi bi-list"></i> <span className="ms-1 d-none d-sm-inline">Category</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="dashboard" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-person"></i> <span className="ms-1 d-none d-sm-inline">Profile</span></Link>
+                            </li>
+                            <li>
+                                <a href="#" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="col p-0 m-0">
+                    <div className='p-2 d-flex justify-content-center shadow'>
+                        <h4>Employee Management System</h4>
+                    </div>
+            
+                </div>
+            </div>
+        </div>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<end qouted<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    )
+}
+
+export default Dashboard
+
+==============================check the page layout url: http://localhost:5173/dashboard==================
+
+====================use outlet to create cart/content for dashboard===============
+===================================dashboard.jsx================
+import React from 'react'
+import { Link , Outlet } from "react-router-dom"      >>>>>>>>>>>>>>>>>>>>>add Outlet <<<<<<<<<<<<<<<
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+export const Dashboard = () => {
+    return (
+
+        <div className="container-fluid">
+            <div className="row flex-nowrap">
+                <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                    <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="/" className="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
+                            <span className="fs-5 fw-bolder d-none d-sm-inline">Admin Dashboard</span>
+                        </a>
+                        <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li>
+                                <Link to="/dashboard" data-bs-toggle="collapse" className="nav-link text-white px-0 align-middle">
+                                    <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Dashboard</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Employees</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard" className="nav-link px-0 align-middle text-white">
+                                    <i className="bi bi-list"></i> <span className="ms-1 d-none d-sm-inline">Category</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="dashboard" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-person"></i> <span className="ms-1 d-none d-sm-inline">Profile</span></Link>
+                            </li>
+                            <li>
+                                <a href="#" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col p-0 m-0">
+                    <div className='p-2 d-flex justify-content-center shadow'>
+                        <h4>Employee Management System</h4>
+                    </div>
+                    <Outlet />  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>add this line>>>>>>>>>>>>>>>>>>
+            
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Dashboard
+
+==============================================src/components/create Home.jsx============
+import React from 'react'
+
+const Home = () => {
+  return (
+    <div>Home</div>
+  )
+}
+
+export default Home
+=============================================src/App.jsx===========
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Dashboard from './components/dashboard'
+import Home from "./components/Home"  >>>>>>>>>>>>>>>>>>>>>>>>>>>add line<<<<<<<<<<<<<<<<
+
+function App() {
+
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/adminlogin" element={<Login />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="" element={< Home />}> </Route> >>>>>>>>>>>>>>>>>>>add line<<<<<<<<<<<<<<
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+============================================check the dashboard page see "Home" in the content.
+============================create file components/Home.jsx==================
+import React from 'react'
+
+const Home = () => {
+  return (
+    <div>Home</div>
+  )
+}
+
+export default Home
+============================create file components/Profile.jsx============
+import React from 'react'
+
+const Profile = () => {
+  return (
+    <div>Profile</div>
+  )
+}
+
+export default Profile
+============================create file components/Employee.jsx=============
+import React from 'react'
+
+const Employee = () => {
+  return (
+    <div>Employee</div>
+  )
+}
+
+export default Employee
+=====================================create file Category.jsx=============
+import React from 'react'
+
+const Category = () => {
+  return (
+    <div>Category</div>
+  )
+}
+
+export default Category
+===========================================dashboard.jsx======================
+import React from 'react'
+import { Link , Outlet } from "react-router-dom"
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+export const Dashboard = () => {
+    return (
+
+        <div className="container-fluid">
+            <div className="row flex-nowrap">
+                <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                    <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="/" className="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
+                            <span className="fs-5 fw-bolder d-none d-sm-inline">Admin Dashboard</span>
+                        </a>
+                        <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li>
+                                <Link to="/dashboard" data-bs-toggle="collapse" className="nav-link text-white px-0 align-middle">
+                                    <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Dashboard</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/employee" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Employees</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/category" className="nav-link px-0 align-middle text-white">
+                                    <i className="bi bi-list"></i> <span className="ms-1 d-none d-sm-inline">Category</span> </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/profile" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-person"></i> <span className="ms-1 d-none d-sm-inline">Profile</span></Link>
+                            </li>
+                            <li>
+                                <a href="#" className="nav-link px-0 align-middle text-white">
+                                    <i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col p-0 m-0">
+                    <div className='p-2 d-flex justify-content-center shadow'>
+                        <h4>Employee Management System</h4>
+                    </div>
+                    <Outlet />
+            
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Dashboard
+=======================================App.jsx==================
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Dashboard from './components/dashboard'
+import Home from "./components/Home"
+import Employee from './components/Employee'
+import Category from './components/Category'
+import Profile from './components/Profile'
+
+function App() {
+
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/adminlogin" element={<Login />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="" element={< Home />}> </Route>
+          <Route path="/dashboard/employee" element={< Employee />}> </Route>
+          <Route path="/dashboard/category" element={< Category />}> </Route>
+          <Route path="/dashboard/profile" element={< Profile />}> </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+
+
+========================mysq: create table=========================
+name: category
+2 columns: 
+col1: id, index, primarly, A_I
+col2: name, varchart, 30
+
+======================================Category.jsx=================
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+const Category = () => {
+  return (
+    <div className='px-5 mt-3'>
+      <div className='d-flex justify-content-center'>
+        <h3>Category List </h3>
+      </div>
+      <Link to="/dashboard/add_category" className="btn btn-success"> Add Category </Link>
+    </div>
+  )
+}
+
+export default Category
+=================create file=========Components/AddCategory.jsx========
+import React from 'react'
+
+const AddCategory = () => {
+  return (
+    <div>AddCategory</div>
+  )
+}
+
+export default AddCategory
+=======================================App.jsx===================
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Dashboard from './components/dashboard'
+import Home from "./components/Home"
+import Employee from './components/Employee'
+import Category from './components/Category'
+import AddCategory from './components/AddCategory'
+import Profile from './components/Profile'
+
+
+function App() {
+
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/adminlogin" element={<Login />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="" element={< Home />}> </Route>
+          <Route path="/dashboard/employee" element={< Employee />}> </Route>
+          <Route path="/dashboard/category" element={< Category />}> </Route>
+          <Route path="/dashboard/profile" element={< Profile />}> </Route>
+          <Route path="/dashboard/add_category" element={< AddCategory />}> </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+=====================================edit AddCategory.jsx======
+import React from 'react'
+
+const AddCategory = () => {
+  return (
+    <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <div className='text-warning'>
+
+            </div>
+            <h2>Add Category</h2>
+            <form>
+                <div className='mb-3'>
+                    <label htmlFor="category"><strong>Category</strong></label>
+                    <input type="text" name='category'   
+                    placeholder='Enter Category' 
+                    onChange={(e)=> setCategory(e.target.value)}
+                    className='form-control rounded-0' />
+                </div>
+                
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Add Category</button>
+                
+            </form>
+        </div>
+    </div>
+  )
+}
+
+export default AddCategory
+========================================check the added category site=================
+===============================AddCategory.jsx====================
+import React, { useState } from 'react'
+
+const AddCategory = () => {
+    const [category, setCategory] = useState()
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        axios.post('http://localhost:3000/auth/add_category', {category})
+        .then(result=>console.log(result.data))
+        .catch(err=>console.log(err))
+    }
+  return (
+    <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <div className='text-warning'>
+
+            </div>
+            <h2>Add Category</h2>
+            <form onSubmit ={handleSubmit}>
+                <div className='mb-3'>
+                    <label htmlFor="category"><strong>Category</strong></label>
+                    <input type="text" name='category'   
+                    placeholder='Enter Category' 
+                    onChange={(e)=> setCategory(e.target.value)}
+                    className='form-control rounded-0' />
+                </div>
+                
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Add Category</button>
+                
+            </form>
+        </div>
+    </div>
+  )
+}
+
+export default AddCategory
+=====================================server/index.js===================
+=========================server/Routes/AdminRoutes.js===============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+})
+
+
+export { router as adminRouter }
+
+===========================================Frontend : AddCategory.jsx=======================
+import axios from 'axios' >>>add
+import React, { useState } from 'react'
+import { useNavigate} from 'react-router-dom'  >>>>>>add
+ 
+const AddCategory = () => {
+    const [category, setCategory] = useState()  >>>>>>add below lines<<<<<<<<<<<<<<<<<
+    const navigate = useNavigate()
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        axios.post('http://localhost:3000/auth/add_category', {category})
+        .then(result=>{
+            if(result.data.Status){
+                navigate('/dashboard/category')
+            } else{
+                alert(result.data.Error)
+            }
+        })
+        .catch(err=>console.log(err))   <<<<<<<<<<<<<<<<<<
+    }
+  return (
+    <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
+        <div className='p-3 rounded w-25 border loginForm'>
+            <div className='text-warning'>
+
+            </div>
+            <h2>Add Category</h2>
+            <form onSubmit ={handleSubmit}>   >>>>>handleSubmit<<<<
+                <div className='mb-3'>
+                    <label htmlFor="category"><strong>Category</strong></label>
+                    <input type="text" name='category'   
+                    placeholder='Enter Category' 
+                    onChange={(e)=> setCategory(e.target.value)}
+                    className='form-control rounded-0' />
+                </div>
+                
+                <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Add Category</button>
+                
+            </form>
+        </div>
+    </div>
+  )
+}
+
+export default AddCategory
+
+===========================add cataegory to page tested===========
+========================display category to category page============
+==========================server/AdminRoute.js=============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Add below line <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+==============================================Frontend: Category.jsx==============
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'  >>>>>ADD<<<<<
+import { Link } from 'react-router-dom'
+
+const Category = () => {
+            >>>>>>>>>>>>>>>>>>ADD<<<<<<<<<<<<<<<<<<<<<
+  const [category, setCategory] = useState([])
+  useEffect(()=>{
+        axios.get('http://localhost:3000/auth/category')
+        .then(result=>{
+            if(result.data.Status) {
+              setCategory(result.data.Result);
+            } else {
+                alert(result.data.Error)
+            }
+
+        }).catch(err=>console.log(err))
+  },[])
+
+  >>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  return (
+    <div className='px-5 mt-3'>
+      <div className='d-flex justify-content-center'>
+        <h3>Category List </h3>
+      </div>
+      <Link to="/dashboard/add_category" className="btn btn-success"> Add Category </Link> 
+        <div className='mt-3'>  <<<<<<<<<<<<<<<<<<<<<ADD>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        <table className='table'>
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              category.map(c =>(
+                <tr>
+                  <td> {c.name}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div> >>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<
+    </div>
+  )
+}
+
+export default Category
+===============================check category site==================
+================Move to page Management Employees======Employee.jsx=====
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+const Employee = () => {
+  return (
+    <div className='px-5 mt-3'>
+      <div className='d-flex justify-content-center'>
+        <h3>Employee List </h3>
+      </div>
+      <Link to="/dashboard/add_employee" className="btn btn-success"> Add Employee </Link>
+      <div className='mt-3'> </div>
+    </div>
+  )
+}
+
+export default Employee
+=======================================App.jsx=====================
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import Dashboard from './components/dashboard'
+import Home from "./components/Home"
+import Employee from './components/Employee'
+import Category from './components/Category'
+import AddCategory from './components/AddCategory'
+import Profile from './components/Profile'
+import AddEmployee from './components/AddEmployee' [[add]]
+
+
+function App() {
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/adminlogin" element={<Login />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="" element={< Home />}> </Route>
+          <Route path="/dashboard/employee" element={< Employee />}> </Route>
+          <Route path="/dashboard/category" element={< Category />}> </Route>
+          <Route path="/dashboard/profile" element={< Profile />}> </Route>
+          <Route path="/dashboard/add_category" element={< AddCategory />}> </Route>
+          <Route path="/dashboard/add_employee" element={< AddEmployee />}> </Route> [[[add]]]
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+===========================================create file components/AddEmployee.jsx===============
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const AddEmployee = () => {
+  const [employee, setEmployee] = useState({
+    name: "",
+    email: "",
+    password: "",
+    salary: "",
+    address: "",
+    category_id: "",
+    image: "",
+  });
+  const [category, setCategory] = useState([]);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/category")
+      .then((result) => {
+        if (result.data.Status) {
+          setCategory(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append('name', employee.name);
+    formData.append('email', employee.email);
+    formData.append('password', employee.password);
+    formData.append('address', employee.address);
+    formData.append('salary', employee.salary);
+    formData.append('image', employee.image);
+    formData.append('category_id', employee.category_id);
+
+    axios.post('http://localhost:3000/auth/add_employee', formData)
+    .then(result => {
+        if(result.data.Status) {
+            navigate('/dashboard/employee')
+        } else {
+            alert(result.data.Error)
+        }
+    })
+    .catch(err => console.log(err))
+  }
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-3">
+      <div className="p-3 rounded w-50 border">
+        <h3 className="text-center">Add Employee</h3>
+        <form className="row g-1" onSubmit={handleSubmit}>
+          <div className="col-12">
+            <label for="inputName" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputName"
+              placeholder="Enter Name"
+              onChange={(e) =>
+                setEmployee({ ...employee, name: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="inputEmail4" className="form-label">
+              Email
+            </label>
+            <input
+              type="email"
+              className="form-control rounded-0"
+              id="inputEmail4"
+              placeholder="Enter Email"
+              autoComplete="off"
+              onChange={(e) =>
+                setEmployee({ ...employee, email: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="inputPassword4" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control rounded-0"
+              id="inputPassword4"
+              placeholder="Enter Password"
+              onChange={(e) =>
+                setEmployee({ ...employee, password: e.target.value })
+              }
+            />
+            <label for="inputSalary" className="form-label">
+              Salary
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputSalary"
+              placeholder="Enter Salary"
+              autoComplete="off"
+              onChange={(e) =>
+                setEmployee({ ...employee, salary: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="inputAddress" className="form-label">
+              Address
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputAddress"
+              placeholder="1234 Main St"
+              autoComplete="off"
+              onChange={(e) =>
+                setEmployee({ ...employee, address: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="category" className="form-label">
+              Category
+            </label>
+            <select name="category" id="category" className="form-select"
+                onChange={(e) => setEmployee({...employee, category_id: e.target.value})}>
+              {category.map((c) => {
+                return <option value={c.id}>{c.name}</option>;
+              })}
+            </select>
+          </div>
+          <div className="col-12 mb-3">
+            <label className="form-label" for="inputGroupFile01">
+              Select Image
+            </label>
+            <input
+              type="file"
+              className="form-control rounded-0"
+              id="inputGroupFile01"
+              name="image"
+              onChange={(e) => setEmployee({...employee, image: e.target.files[0]})}
+            />
+          </div>
+          <div className="col-12">
+            <button type="submit" className="btn btn-primary w-100">
+              Add Employee
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default AddEmployee;
+======================================sql databease create table employee 8 columns
+id: INT, A.I
+name: VARCHAR, Length: 30
+email:VARCHAR, Length: 40
+password: VARCHAR, Length: 150
+salary: INT
+address: VARCHAR, Lenght: 30
+image: VARCHAR, Lenght: 60
+category_id: INT, Index: => Go
+
+Save
+
+Designer see picture sql relationship.png...
+
+=========================server/AdminhRoute.js===============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt'; >>>ADD
+import multer from "multer"; >>>ADD
+import path from "path"; >>>>ADD
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload  >>>>>ADD
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload   >>>>ADD
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+
+
+export { router as adminRouter }
+
+==============================================create folder server/Public=> create folder Images: server/Public/Images
+=======================================Frontend: src/components/create file AddEmployee.jsx============
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const AddEmployee = () => {
+  const [employee, setEmployee] = useState({
+    name: "",
+    email: "",
+    password: "",
+    salary: "",
+    address: "",
+    category_id: "",
+    image: "",
+  });
+  const [category, setCategory] = useState([]);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/category")
+      .then((result) => {
+        if (result.data.Status) {
+          setCategory(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append('name', employee.name);
+    formData.append('email', employee.email);
+    formData.append('password', employee.password);
+    formData.append('address', employee.address);
+    formData.append('salary', employee.salary);
+    formData.append('image', employee.image);
+    formData.append('category_id', employee.category_id);
+
+    axios.post('http://localhost:3000/auth/add_employee', formData)
+    .then(result => {
+        if(result.data.Status) {
+            navigate('/dashboard/employee')
+        } else {
+            alert(result.data.Error)
+        }
+    })
+    .catch(err => console.log(err))
+  }
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-3">
+      <div className="p-3 rounded w-50 border">
+        <h3 className="text-center">Add Employee</h3>
+        <form className="row g-1" onSubmit={handleSubmit}>
+          <div className="col-12">
+            <label htmlFor="inputName" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputName"
+              placeholder="Enter Name"
+              onChange={(e) =>
+                setEmployee({ ...employee, name: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label htmlFor="inputEmail4" className="form-label">
+              Email
+            </label>
+            <input
+              type="email"
+              className="form-control rounded-0"
+              id="inputEmail4"
+              placeholder="Enter Email"
+              autoComplete="off"
+              onChange={(e) =>
+                setEmployee({ ...employee, email: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label htmlFor="inputPassword4" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control rounded-0"
+              id="inputPassword4"
+              placeholder="Enter Password"
+              onChange={(e) =>
+                setEmployee({ ...employee, password: e.target.value })
+              }
+            />
+            <label htmlFor="inputSalary" className="form-label">
+              Salary
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputSalary"
+              placeholder="Enter Salary"
+              autoComplete="off"
+              onChange={(e) =>
+                setEmployee({ ...employee, salary: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label htmlFor="inputAddress" className="form-label">
+              Address
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputAddress"
+              placeholder="1234 Main St"
+              autoComplete="off"
+              onChange={(e) =>
+                setEmployee({ ...employee, address: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label htmlFor="category" className="form-label">
+              Category
+            </label>
+            <select name="category" id="category" className="form-select"
+                onChange={(e) => setEmployee({...employee, category_id: e.target.value})}>
+              {category.map((c) => {
+                return <option value={c.id}>{c.name}</option>;
+              })}
+            </select>
+          </div>
+          <div className="col-12 mb-3">
+            <label className="form-label" htmlFor="inputGroupFile01">
+              Select Image
+            </label>
+            <input
+              type="file"
+              className="form-control rounded-0"
+              id="inputGroupFile01"
+              name="image"
+              onChange={(e) => setEmployee({...employee, image: e.target.files[0]})}
+            />
+          </div>
+          <div className="col-12">
+            <button type="submit" className="btn btn-primary w-100">
+              Add Employee
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default AddEmployee;
+====================================================Add and check msql data================
+==========================show employee list to employee page
+==============front end components/employee.jsx=========
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+const Employee = () => {
+  const [employee, setEmployee] = useState([]);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/employee")
+      .then((result) => {
+        if (result.data.Status) {
+          setEmployee(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const handleDelete = (id) => {
+    axios.delete('http://localhost:3000/auth/delete_employee/'+id)
+    .then(result => {
+        if(result.data.Status) {
+            window.location.reload()
+        } else {
+            alert(result.data.Error)
+        }
+    })
+  } 
+  return (
+    <div className="px-5 mt-3">
+      <div className="d-flex justify-content-center">
+        <h3>Employee List</h3>
+      </div>
+      <Link to="/dashboard/add_employee" className="btn btn-success">
+        Add Employee
+      </Link>
+      <div className="mt-3">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Salary</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {employee.map((e) => (
+              <tr>
+                <td>{e.name}</td>
+                <td>
+                  <img
+                    src={`http://localhost:3000/Images/` + e.image}
+                    className="employee_image"
+                  />
+                </td>
+                <td>{e.email}</td>
+                <td>{e.address}</td>
+                <td>{e.salary}</td>
+                <td>
+                  <Link
+                    to={`/dashboard/edit_employee/` + e.id}
+                    className="btn btn-info btn-sm me-2"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    className="btn btn-warning btn-sm"
+                    onClick={() => handleDelete(e.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default Employee;
+
+===========================================server/index.js=================
+import express from "express";
+import cors from 'cors'
+
+import { adminRouter } from "./Routes/AdminRoute.js";
+
+const app = express()
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    methods: ['GET', 'POST', 'PUT'],
+    credentials: true
+}))
+app.use(express.json())
+app.use('/auth', adminRouter)
+app.use(express.static('Public'))  >>>>ADD
+
+
+app.listen(3000,() =>{
+    console.log('server is running')
+})
+
+=========================================AdminRoute.js===============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import multer from "multer";
+import path from "path";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload 
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+>>>>>>>>>>>>>>>>>>>>>>>ADD BELOW>>>>>>>>>>>>>>>>>>>
+router.get('/employee', (req, res) => {
+    const sql = "SELECT * FROM employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+export { router as adminRouter }
+
+=========================Frontend employeems/style.css====
+.loginPage {
+    background: url('Images/1st floor.jpg');
+    background: linear-gradient(rgba(11, 11, 11, 0.5), rgba(10, 10, 10, 0.5)), url("Images/1st floor.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 120%;
+}
+
+.loginForm {
+    background-color: rgba(1, 32, 93, 0.6);
+    color: white;
+}
+
+>>>>ADD BELOW>>>>>
+ul li :hover {
+    background-color: gray;
+}
+
+.employee_image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.emp_det_image {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+
+====================================Edit Employee==================
+==========App.jsx=========================
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from './components/login'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+
+import Dashboard from './components/dashboard'
+import Home from "./components/Home"
+import Employee from './components/employee'
+import Category from './components/Category'
+import AddCategory from './components/AddCategory'
+import Profile from './components/Profile'
+import AddEmployee from './components/addEmployee'
+import EditEmployee from './components/editEmployee' >>>>>ADD
+
+
+function App() {
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/adminlogin" element={<Login />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="" element={< Home />}> </Route>
+          <Route path="/dashboard/employee" element={< Employee />}> </Route>
+          <Route path="/dashboard/category" element={< Category />}> </Route>
+          <Route path="/dashboard/profile" element={< Profile />}> </Route>
+          <Route path="/dashboard/add_category" element={< AddCategory />}> </Route>
+          <Route path="/dashboard/add_employee" element={< AddEmployee />}> </Route>
+          <Route path="/dashboard/edit_employee/:id" element={< EditEmployee />}> </Route>  >>>>ADDD
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+
+
+====================================created scr/components/edit_employee.jsx====
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+
+const EditEmployee = () => {
+    const {id} = useParams()
+    const [employee, setEmployee] = useState({
+        name: "",
+        email: "",
+        salary: "",
+        address: "",
+        category_id: "",
+      });
+      const [category, setCategory] = useState([])
+      const navigate = useNavigate()
+
+      useEffect(()=> {
+        axios.get('http://localhost:3000/auth/category')
+        .then(result => {
+            if(result.data.Status) {
+                setCategory(result.data.Result);
+            } else {
+                alert(result.data.Error)
+            }
+        }).catch(err => console.log(err))
+
+        axios.get('http://localhost:3000/auth/employee/'+id)
+        .then(result => {
+            setEmployee({
+                ...employee,
+                name: result.data.Result[0].name,
+                email: result.data.Result[0].email,
+                address: result.data.Result[0].address,
+                salary: result.data.Result[0].salary,
+                category_id: result.data.Result[0].category_id,
+            })
+        }).catch(err => console.log(err))
+    }, [])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        axios.put('http://localhost:3000/auth/edit_employee/'+id, employee)
+        .then(result => {
+            if(result.data.Status) {
+                navigate('/dashboard/employee')
+            } else {
+                alert(result.data.Error)
+            }
+        }).catch(err => console.log(err))
+    }
+    
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-3">
+      <div className="p-3 rounded w-50 border">
+        <h3 className="text-center">Edit Employee</h3>
+        <form className="row g-1" onSubmit={handleSubmit}>
+          <div className="col-12">
+            <label for="inputName" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputName"
+              placeholder="Enter Name"
+              value={employee.name}
+              onChange={(e) =>
+                setEmployee({ ...employee, name: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="inputEmail4" className="form-label">
+              Email
+            </label>
+            <input
+              type="email"
+              className="form-control rounded-0"
+              id="inputEmail4"
+              placeholder="Enter Email"
+              autoComplete="off"
+              value={employee.email}
+              onChange={(e) =>
+                setEmployee({ ...employee, email: e.target.value })
+              }
+            />
+          </div>
+          <div className='col-12'>
+            <label for="inputSalary" className="form-label">
+              Salary
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputSalary"
+              placeholder="Enter Salary"
+              autoComplete="off"
+              value={employee.salary}
+              onChange={(e) =>
+                setEmployee({ ...employee, salary: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="inputAddress" className="form-label">
+              Address
+            </label>
+            <input
+              type="text"
+              className="form-control rounded-0"
+              id="inputAddress"
+              placeholder="1234 Main St"
+              autoComplete="off"
+              value={employee.address}
+              onChange={(e) =>
+                setEmployee({ ...employee, address: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-12">
+            <label for="category" className="form-label">
+              Category
+            </label>
+            <select name="category" id="category" className="form-select"
+                onChange={(e) => setEmployee({...employee, category_id: e.target.value})}>
+              {category.map((c) => {
+                return <option value={c.id}>{c.name}</option>;
+              })}
+            </select>
+          </div>
+          
+          <div className="col-12">
+            <button type="submit" className="btn btn-primary w-100">
+              Edit Employee
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default EditEmployee
+=============================================server====Routes/AdminRoute.js=====
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import multer from "multer";
+import path from "path";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload 
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+
+router.get('/employee', (req, res) => {
+    const sql = "SELECT * FROM employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.get('/employee/:id', (req, res) => {   >>>>ADDD
+    const id = req.params.id;
+    const sql = "SELECT * FROM employee WHERE id = ?";
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.put('/edit_employee/:id', (req, res) => {  >>>>ADD
+    const id = req.params.id;
+    const sql = `UPDATE employee 
+        set name = ?, email = ?, salary = ?, address = ?, category_id = ? 
+        Where id = ?`
+    const values = [
+        req.body.name,
+        req.body.email,
+        req.body.salary,
+        req.body.address,
+        req.body.category_id
+    ]
+    con.query(sql,[...values, id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+export { router as adminRouter }
+=======================check page edit emplyee=== and press edit====
+
+===============================Delete==============================
+==========src/employee.jsx....refer delete part above===
+===================server/index.js insert delete funtion to===
+import express from "express";
+import cors from 'cors'
+
+import { adminRouter } from "./Routes/AdminRoute.js";
+
+const app = express()
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    methods: ['GET', 'POST', 'PUT','DELETE'], >>>>>>>ADD
+    credentials: true
+}))
+app.use(express.json())
+app.use('/auth', adminRouter)
+app.use(express.static('Public'))
+
+
+app.listen(3000,() =>{
+    console.log('server is running')
+})
+==========================server AdminRoutes.js==============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import multer from "multer";
+import path from "path";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload 
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+
+router.get('/employee', (req, res) => {
+    const sql = "SELECT * FROM employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.get('/employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM employee WHERE id = ?";
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.put('/edit_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE employee 
+        set name = ?, email = ?, salary = ?, address = ?, category_id = ? 
+        Where id = ?`
+    const values = [
+        req.body.name,
+        req.body.email,
+        req.body.salary,
+        req.body.address,
+        req.body.category_id
+    ]
+    con.query(sql,[...values, id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.delete('/delete_employee/:id', (req, res) => {  >>>>>>ADD
+    const id = req.params.id;
+    const sql = "delete from employee where id = ?"
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+export { router as adminRouter }
+
+=============================DONE DELETE CHECK THE PAGE=============
+================design DASHBOARD================
+=================================scr/components/Home.jsx==============
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+
+const Home = () => {
+  const [adminTotal, setAdminTotal] = useState(0)
+  const [employeeTotal, setemployeeTotal] = useState(0)
+  const [salaryTotal, setSalaryTotal] = useState(0)
+  const [admins, setAdmins] = useState([])
+
+  useEffect(() => {
+    adminCount();
+    employeeCount();
+    salaryCount();
+    AdminRecords();
+  }, [])
+
+  const AdminRecords = () => {
+    axios.get('http://localhost:3000/auth/admin_records')
+    .then(result => {
+      if(result.data.Status) {
+        setAdmins(result.data.Result)
+      } else {
+         alert(result.data.Error)
+      }
+    })
+  }
+  const adminCount = () => {
+    axios.get('http://localhost:3000/auth/admin_count')
+    .then(result => {
+      if(result.data.Status) {
+        setAdminTotal(result.data.Result[0].admin)
+      }
+    })
+  }
+  const employeeCount = () => {
+    axios.get('http://localhost:3000/auth/employee_count')
+    .then(result => {
+      if(result.data.Status) {
+        setemployeeTotal(result.data.Result[0].employee)
+      }
+    })
+  }
+  const salaryCount = () => {
+    axios.get('http://localhost:3000/auth/salary_count')
+    .then(result => {
+      if(result.data.Status) {
+        setSalaryTotal(result.data.Result[0].salaryOFEmp)
+      } else {
+        alert(result.data.Error)
+      }
+    })
+  }
+  return (
+    <div>
+      <div className='p-3 d-flex justify-content-around mt-3'>
+        <div className='px-3 pt-2 pb-3 border shadow-sm w-25'>
+          <div className='text-center pb-1'>
+            <h4>Admin</h4>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <h5>Total:</h5>
+            <h5>{adminTotal}</h5>
+          </div>
+        </div>
+        <div className='px-3 pt-2 pb-3 border shadow-sm w-25'>
+          <div className='text-center pb-1'>
+            <h4>Employee</h4>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <h5>Total:</h5>
+            <h5>{employeeTotal}</h5>
+          </div>
+        </div>
+        <div className='px-3 pt-2 pb-3 border shadow-sm w-25'>
+          <div className='text-center pb-1'>
+            <h4>Salary</h4>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <h5>Total:</h5>
+            <h5>${salaryTotal}</h5>
+          </div>
+        </div>
+      </div>
+      <div className='mt-4 px-5 pt-3'>
+        <h3>List of Admins</h3>
+        <table className='table'>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              admins.map(a => (
+                <tr>
+                  <td>{a.email}</td>
+                  <td>
+                  <button
+                    className="btn btn-info btn-sm me-2">
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-warning btn-sm" >
+                    Delete
+                  </button>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+export default Home
+========================================server/AdminRoute.js===============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import multer from "multer";
+import path from "path";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload 
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+
+router.get('/employee', (req, res) => {
+    const sql = "SELECT * FROM employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.get('/employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM employee WHERE id = ?";
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.put('/edit_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE employee 
+        set name = ?, email = ?, salary = ?, address = ?, category_id = ? 
+        Where id = ?`
+    const values = [
+        req.body.name,
+        req.body.email,
+        req.body.salary,
+        req.body.address,
+        req.body.category_id
+    ]
+    con.query(sql,[...values, id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.delete('/delete_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "delete from employee where id = ?"
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/admin_count', (req, res) => {
+    const sql = "select count(id) as admin from admin";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>ADD BELOW<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+
+router.get('/employee_count', (req, res) => {
+    const sql = "select count(id) as employee from employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/salary_count', (req, res) => {
+    const sql = "select sum(salary) as salaryOFEmp from employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+export { router as adminRouter }
+
+=================================CHECK DAHSBOARD======================
+===================================Show amdin list in dashboard (loop home.jsx)========
+============================server/Routes/AdminRoute.js============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import multer from "multer";
+import path from "path";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload 
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+
+router.get('/employee', (req, res) => {
+    const sql = "SELECT * FROM employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.get('/employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM employee WHERE id = ?";
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.put('/edit_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE employee 
+        set name = ?, email = ?, salary = ?, address = ?, category_id = ? 
+        Where id = ?`
+    const values = [
+        req.body.name,
+        req.body.email,
+        req.body.salary,
+        req.body.address,
+        req.body.category_id
+    ]
+    con.query(sql,[...values, id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.delete('/delete_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "delete from employee where id = ?"
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/admin_count', (req, res) => {
+    const sql = "select count(id) as admin from admin";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/employee_count', (req, res) => {
+    const sql = "select count(id) as employee from employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/salary_count', (req, res) => {
+    const sql = "select sum(salary) as salaryOFEmp from employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+>>>>>>>>>>>>>>>>>>>>>>>>ADD<<<<<<<<<<<<<<<<<<<<<
+
+router.get('/admin_records', (req, res) => {
+    const sql = "select * from admin"
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+
+export { router as adminRouter }
+
+=================================Done let check dasboard page====================
+=========================MOVE TO DASHBOAR/LOGOUT=====
+======================scr/dahsboard.jsx========================
+import React from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import axios from "axios";
+
+const Dashboard = () => {
+  const anvigate = useNavigate()
+  axios.defaults.withCredentials = true
+  const handleLogout = () => {
+    axios.get('http://localhost:3000/auth/logout')
+    .then(result => {
+      if(result.data.Status) { 
+        localStorage.removeItem("valid")
+        anvigate('/adminlogin')
+      }
+    })
+  }
+  return (
+    <div className="container-fluid">
+      <div className="row flex-nowrap">
+        <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+          <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+            <Link
+              to="/dashboard"
+              className="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none"
+            >
+              <span className="fs-5 fw-bolder d-none d-sm-inline">
+                Code With Yousof
+              </span>
+            </Link>
+            <ul
+              className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+              id="menu"
+            >
+              <li className="w-100">
+                <Link
+                  to="/dashboard"
+                  className="nav-link text-white px-0 align-middle"
+                >
+                  <i className="fs-4 bi-speedometer2 ms-2"></i>
+                  <span className="ms-2 d-none d-sm-inline">Dashboard</span>
+                </Link>
+              </li>
+              <li className="w-100">
+                <Link
+                  to="/dashboard/employee"
+                  className="nav-link px-0 align-middle text-white"
+                >
+                  <i className="fs-4 bi-people ms-2"></i>
+                  <span className="ms-2 d-none d-sm-inline">
+                    Manage Employees
+                  </span>
+                </Link>
+              </li>
+              <li className="w-100">
+                <Link
+                  to="/dashboard/category"
+                  className="nav-link px-0 align-middle text-white"
+                >
+                  <i className="fs-4 bi-columns ms-2"></i>
+                  <span className="ms-2 d-none d-sm-inline">Category</span>
+                </Link>
+              </li>
+              <li className="w-100">
+                <Link
+                  to="/dashboard/profile"
+                  className="nav-link px-0 align-middle text-white"
+                >
+                  <i className="fs-4 bi-person ms-2"></i>
+                  <span className="ms-2 d-none d-sm-inline">Profile</span>
+                </Link>
+              </li>
+              <li className="w-100" onClick={handleLogout}>  >>>>>STAGE<<<<
+              <Link
+                  className="nav-link px-0 align-middle text-white"
+                >
+                  <i className="fs-4 bi-power ms-2"></i>
+                  <span className="ms-2 d-none d-sm-inline">Logout</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="col p-0 m-0">
+            <div className="p-2 d-flex justify-content-center shadow">
+                <h4>Emoployee Management System</h4>
+            </div>
+            <Outlet />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
+
+================================server/AdminRoutes.js============
+import express from 'express'
+import con from "../utils/db.js";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import multer from "multer";
+import path from "path";
+
+const router = express.Router()
+
+router.post('/adminlogin', (req, res) => {
+    //console.log(req.body)
+    const sql = "SELECT * from admin Where email = ? and password = ?";
+    con.query(sql, [req.body.email, req.body.password],
+        (err, result) => {
+            if (err) return res.json({ loginStatus: false, Error: "Query error" })
+            if (result.length > 0) {
+                const email = result[0].email;
+                const token = jwt.sign({ role: "admin", email: email },
+                     "jwt_secret_key", { expiresIn: "100d" });
+                     res.cookie('token', token)
+                     return res.json({ loginStatus: true });
+            }
+            else{
+                return res.json({ loginStatus: false, Error: "Wrong email or password" });
+            }
+        }
+    )
+});
+
+router.get('/category', (req, res)=>{
+    const sql = "SELECT * FROM category";
+    con.query(sql, (err, result) =>{
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.post('/add_category', (req, res) => {
+    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    con.query(sql, [req.body.category], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true})
+    })
+})
+
+// image upload 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
+// end imag eupload 
+
+router.post('/add_employee',upload.single('image'), (req, res) => {
+    const sql = `INSERT INTO employee 
+    (name,email,password, address, salary,image, category_id) 
+    VALUES (?)`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        const values = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.body.address,
+            req.body.salary, 
+            req.file.filename,
+            req.body.category_id
+        ]
+        con.query(sql, [values], (err, result) => {
+            if(err) return res.json({Status: false, Error: err})
+            return res.json({Status: true})
+        })
+    })
+})
+
+router.get('/employee', (req, res) => {
+    const sql = "SELECT * FROM employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.get('/employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM employee WHERE id = ?";
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+
+router.put('/edit_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE employee 
+        set name = ?, email = ?, salary = ?, address = ?, category_id = ? 
+        Where id = ?`
+    const values = [
+        req.body.name,
+        req.body.email,
+        req.body.salary,
+        req.body.address,
+        req.body.category_id
+    ]
+    con.query(sql,[...values, id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.delete('/delete_employee/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "delete from employee where id = ?"
+    con.query(sql,[id], (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/admin_count', (req, res) => {
+    const sql = "select count(id) as admin from admin";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/employee_count', (req, res) => {
+    const sql = "select count(id) as employee from employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/salary_count', (req, res) => {
+    const sql = "select sum(salary) as salaryOFEmp from employee";
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+
+router.get('/admin_records', (req, res) => {
+    const sql = "select * from admin"
+    con.query(sql, (err, result) => {
+        if(err) return res.json({Status: false, Error: "Query Error"+err})
+        return res.json({Status: true, Result: result})
+    })
+})
+>>>>>>>>>>>>>>>>>>>>>ADD below<<<<<<<<<<<<<<<
+
+router.get('/logout', (req, res) => { 
+    res.clearCookie('token')
+    return res.json({Status: true})
+})
+
+export { router as adminRouter }
+
+=====================DONE=====================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
