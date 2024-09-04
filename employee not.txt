@@ -200,6 +200,8 @@ export default Login
 4. id,type: INT, tick A_I ; email ,type: VARCHAR, lenght: 255 ; password, type: VARCHAR, lenght: 255
 5. Save table.
 6 insert 1 record to the amdin table: id: 1, email: pinkpink@gmail.com, password: 12345
+=>
+INSERT INTO `admin` (`id`, `email`, `password`) VALUES (NULL, 'pinkpink@gmail.com', '12345');
 
 ================server side=============
 create folder: server/utils
